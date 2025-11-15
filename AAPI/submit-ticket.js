@@ -1,4 +1,5 @@
-import axios from 'axios';
+// api/submit-ticket.js
+const axios = require('axios');
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
@@ -25,18 +26,21 @@ async function sendTelegramMessage(message) {
 }
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    try {
-      const { name, department, urgency, issue } = req.body;
+  if (req.method !== 'POST') {
+    return res.status(405).json({ success: false, message: 'Method not allowed' });
+  }
 
-      if (!name || !department || !urgency || !issue) {
-        return res.status(400).json({ success: false, message: 'All fields are required.' });
-      }
+  try {
+    const { name, department, urgency, issue } = req.body;
 
-      const ticketId = generateTicketId();
-      const timestamp = new Date().toLocaleString();
+    if (!name || !department || !urgency || !issue) {
+      return res.status(400).json({ success: false, message: 'All fields are required.' });
+    }
 
-      const telegramMessage = `
+    const ticketId = generateTicketId();
+    const timestamp = new Date().toLocaleString();
+
+    const telegramMessage = `
 🆕 <b>NEW IT SUPPORT TICKET</b>
 
 🎫 <b>Ticket ID:</b> <code>${ticketId}</code>
@@ -47,25 +51,13 @@ export default async function handler(req, res) {
 ${issue}
 
 ⏰ <b>Submitted:</b> ${timestamp}
-      `.trim();
+    `.trim();
 
-      await sendTelegramMessage(telegramMessage);
+    await sendTelegramMessage(telegramMessage);
 
-      return res.status(200).json({
-        success: true,
-        ticketId,
-        message: 'Ticket submitted successfully to IT team'
-      });
-    } catch (error) {
-      console.error('Error submitting ticket:', error);
-      return res.status(500).json({
-        success: false,
-        message: 'Error submitting ticket. Please try again later.'
-      });
-    }
-  } else {
-    res.setHeader('Allow', ['POST']);
-    return res.status(405).json({ success: false, message: `Method ${req.method} Not Allowed` });
+    res.status(200).json({ success: true, ticketId, message: 'Ticket submitted successfully.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Error submitting ticket.' });
   }
 }
-
