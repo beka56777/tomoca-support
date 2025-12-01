@@ -1,108 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tomoca IT Support</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-    :root {
-        --primary: #8B4513;
-        --primary-dark: #5D4037;
-        --primary-light: #D2691E;
-        --text: #333;
-        --text-light: #666;
-        --white: #fff;
-        --success: #28a745;
-        --error: #dc3545;
-        --shadow: 0 4px 12px rgba(139,69,19,0.15);
-        --transition: all 0.3s ease;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tomoca IT Support</title>
 
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: var(--text); min-height: 100vh; padding: 20px; }
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-    .container { max-width: 700px; margin: 0 auto; background: var(--white); border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; animation: fadeIn 0.8s ease-out; }
-    @keyframes fadeIn { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .header { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: var(--white); padding: 40px 30px; text-align: center; position: relative; }
-    .logo { display:flex; align-items:center; justify-content:center; margin-bottom:15px; }
-    .logo-icon { font-size:2.5rem; color:var(--white); }
-    .header h1 { font-size:2.5rem; margin-bottom:10px; font-weight:700; }
-    .header p { font-size:1.2rem; opacity:0.9; max-width:500px; margin:0 auto; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #4e2b18, #d4a373);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 25px;
+        }
 
-    .form-container { padding:40px 30px; background: var(--white); }
-    .form-group { margin-bottom:25px; position: relative; }
-    label { display:flex; align-items:center; gap:8px; font-weight:600; color:var(--primary-dark); margin-bottom:10px; }
-    label i { color: var(--primary-light); }
-    .input-wrapper { position: relative; }
-    input, select, textarea { width:100%; padding:15px 20px; border:2px solid #e0e0e0; border-radius:12px; font-size:16px; transition: var(--transition); font-family:inherit; }
-    input:focus, select:focus, textarea:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 3px rgba(139,69,19,0.1); }
-    textarea { resize: vertical; min-height:140px; line-height:1.5; }
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: #fff;
+            border-radius: 18px;
+            padding-bottom: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+            animation: fadeIn 0.6s ease-in-out;
+        }
 
-    .urgency-indicator { display:flex; gap:10px; margin-top:10px; }
-    .urgency-option { flex:1; text-align:center; padding:8px; border-radius:8px; background:#f5f5f5; cursor:pointer; transition: var(--transition); font-weight:500; }
-    .urgency-option:hover { background:#e0e0e0; }
-    .urgency-option.selected { background: var(--primary); color: white; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    .submit-btn { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: var(--white); padding:18px 30px; border:none; border-radius:12px; font-size:1.2rem; font-weight:600; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:0 4px 10px rgba(139,69,19,0.3); transition: var(--transition); }
-    .submit-btn:hover { transform:translateY(-2px); box-shadow:0 6px 15px rgba(139,69,19,0.4); }
-    .submit-btn:active { transform:translateY(0); }
-    .submit-btn:disabled { background:#ccc; cursor:not-allowed; box-shadow:none; transform:none; }
+        .header {
+            background: #3b2314;
+            padding: 35px 25px;
+            text-align: center;
+            color: white;
+            border-radius: 18px 18px 0 0;
+        }
 
-    .loading { display:none; text-align:center; margin:20px 0; flex-direction: column; align-items: center; gap:15px; }
-    .spinner { border:4px solid rgba(139,69,19,0.2); border-top:4px solid var(--primary); border-radius:50%; width:50px; height:50px; animation: spin 1s linear infinite; }
-    @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+        .header h1 {
+            font-size: 2.3em;
+            font-weight: 600;
+        }
 
-    .response-message { display:none; margin-top:25px; padding:20px; border-radius:12px; text-align:center; font-weight:600; animation: slideIn 0.5s ease-out; }
-    @keyframes slideIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
-    .success { background:#e8f5e9; color:var(--success); border:1px solid #c8e6c9; }
-    .error { background:#ffebee; color:var(--error); border:1px solid #ffcdd2; }
+        .header p {
+            opacity: 0.85;
+            margin-top: 5px;
+        }
 
-    .ticket-id { display:inline-block; background:rgba(139,69,19,0.1); padding:8px 15px; border-radius:8px; margin:10px 0; font-family:monospace; font-size:1.1rem; color:var(--primary-dark); }
+        .form-container {
+            padding: 35px 30px;
+        }
 
-    .footer { text-align:center; padding:25px; color:var(--text-light); font-size:0.9rem; border-top:1px solid #f0f0f0; background:#fafafa; }
+        .form-group {
+            margin-bottom: 22px;
+        }
 
-    .step-indicator { display:flex; justify-content:center; margin-bottom:30px; position:relative; }
-    .step { width:30px; height:30px; border-radius:50%; background:#e0e0e0; display:flex; align-items:center; justify-content:center; font-weight:bold; color:var(--text-light); z-index:2; }
-    .step.active { background: var(--primary); color:white; }
-    .step-line { position:absolute; top:15px; left:15%; right:15%; height:2px; background:#e0e0e0; z-index:1; }
+        label {
+            font-weight: 600;
+            color: #3b2314;
+            margin-bottom: 8px;
+            display: block;
+        }
 
-    @media (max-width:600px){
-        .container { border-radius:15px; }
-        .header { padding:30px 20px; }
-        .header h1 { font-size:2rem; }
-        .form-container { padding:30px 20px; }
-        .urgency-indicator { flex-direction: column; }
-    }
-</style>
+        input, select, textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e2df;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: 0.3s;
+            background: #faf7f4;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #a76e45;
+            background: #fff;
+            box-shadow: 0 0 6px rgba(167,110,69,0.4);
+            outline: none;
+        }
+
+        textarea {
+            min-height: 130px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: #a76e45;
+            color: white;
+            font-size: 1.2em;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #8c5934;
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            background: #b1a8a3;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .spinner {
+            width: 45px;
+            height: 45px;
+            border: 4px solid #eee;
+            border-top-color: #a76e45;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .response-message {
+            display: none;
+            padding: 15px;
+            text-align: center;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+
+        .success {
+            background: #d7f5d7;
+            color: #247a24;
+        }
+
+        .error {
+            background: #fdd6d6;
+            color: #9f2b2b;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #6a6a6a;
+            font-size: 0.9em;
+        }
+    </style>
 </head>
-<body>
-<div class="container">
-    <div class="header">
-        <div class="logo"><i class="fas fa-mug-hot logo-icon"></i></div>
-        <h1>Tomoca IT Support</h1>
-        <p>Get technical assistance quickly and efficiently</p>
-    </div>
 
-    <div class="form-container">
-        <div class="step-indicator">
-            <div class="step-line"></div>
-            <div class="step active">1</div>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>☕ Tomoca IT Support</h1>
+            <p>Your technology helpdesk — fast, simple & reliable</p>
         </div>
 
-        <form id="supportForm">
-            <div class="form-group">
-                <label for="name"><i class="fas fa-user"></i> Your Name</label>
-                <div class="input-wrapper">
-                    <input type="text" id="name" name="name" required placeholder="Enter your full name">
+        <div class="form-container">
+            <form id="supportForm">
+                <div class="form-group">
+                    <label>Your Name *</label>
+                    <input type="text" id="name" required placeholder="Enter your full name">
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="department"><i class="fas fa-building"></i> Department</label>
-                <div class="input-wrapper">
-                    <select id="department" name="department" required>
+                <div class="form-group">
+                    <label>Department *</label>
+                    <select id="department" required>
                         <option value="">Select your department</option>
                         <option value="HR">Human Resources</option>
                         <option value="Finance">Finance</option>
@@ -114,116 +192,89 @@
                         <option value="Other">Other</option>
                     </select>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="urgency"><i class="fas fa-exclamation-circle"></i> Urgency Level</label>
-                <div class="input-wrapper">
-                    <select id="urgency" name="urgency" required>
+                <div class="form-group">
+                    <label>Urgency Level *</label>
+                    <select id="urgency" required>
                         <option value="">Select urgency level</option>
-                        <option value="Low">Low - Can wait a few days</option>
-                        <option value="Medium">Medium - Need help today</option>
-                        <option value="High">High - Urgent, affecting work</option>
-                        <option value="Critical">Critical - System down!</option>
+                        <option value="Low">Low (Can wait a few days)</option>
+                        <option value="Medium">Medium (Need help today)</option>
+                        <option value="High">High (Affecting work)</option>
+                        <option value="Critical">Critical (System down!)</option>
                     </select>
                 </div>
-                <div class="urgency-indicator">
-                    <div class="urgency-option" data-value="Low">Low</div>
-                    <div class="urgency-option" data-value="Medium">Medium</div>
-                    <div class="urgency-option" data-value="High">High</div>
-                    <div class="urgency-option" data-value="Critical">Critical</div>
+
+                <div class="form-group">
+                    <label>Issue Description *</label>
+                    <textarea id="issue" required placeholder="Describe the issue clearly..."></textarea>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="issue"><i class="fas fa-clipboard-list"></i> Issue Description</label>
-                <div class="input-wrapper">
-                    <textarea id="issue" name="issue" required placeholder="Please describe your issue in detail..."></textarea>
+                <button type="submit" class="submit-btn">Submit Ticket</button>
+
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Submitting your ticket...</p>
                 </div>
-            </div>
 
-            <button type="submit" class="submit-btn" id="submitBtn">
-                <i class="fas fa-paper-plane"></i> Submit Ticket
-            </button>
+                <div id="responseMessage" class="response-message"></div>
+            </form>
+        </div>
 
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p>Submitting your ticket to the IT team...</p>
-            </div>
-
-            <div class="response-message" id="responseMessage"></div>
-        </form>
+        <div class="footer">
+            Tomoca Coffee — IT Helpdesk System v1.0
+        </div>
     </div>
 
-    <div class="footer">
-        <p>Tomoca Coffee IT Department | Support System v2.0</p>
-    </div>
-</div>
+    <!-- SAME JS YOU HAVE ALREADY → DO NOT CHANGE -->
+    <script>
+        document.getElementById('supportForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
 
-<script>
-document.getElementById('supportForm').addEventListener('submit', async function(e){
-    e.preventDefault();
+            const btn = document.querySelector(".submit-btn");
+            const loading = document.getElementById("loading");
+            const msg = document.getElementById("responseMessage");
 
-    const submitBtn = document.getElementById('submitBtn');
-    const loading = document.getElementById('loading');
-    const responseMessage = document.getElementById('responseMessage');
+            const data = {
+                name: name.value.trim(),
+                department: department.value,
+                urgency: urgency.value,
+                issue: issue.value.trim()
+            };
 
-    const formData = {
-        name: document.getElementById('name').value.trim(),
-        department: document.getElementById('department').value,
-        urgency: document.getElementById('urgency').value,
-        issue: document.getElementById('issue').value.trim()
-    };
+            btn.disabled = true;
+            btn.textContent = "Submitting...";
+            loading.style.display = "block";
+            msg.style.display = "none";
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Submitting...';
-    loading.style.display = 'flex';
-    responseMessage.style.display = 'none';
+            try {
+                const response = await fetch("/api/submit-ticket", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
 
-    try {
-        // ✅ Updated for Vercel serverless function
-        const response = await fetch('/AAPI/submit-ticket', {
-            method:'POST',
-            headers:{ 'Content-Type':'application/json' },
-            body: JSON.stringify(formData)
+                const result = await response.json();
+
+                msg.style.display = "block";
+                if (result.success) {
+                    msg.className = "response-message success";
+                    msg.innerHTML = `✔ Ticket Submitted!<br><br>Your Ticket ID: <b>${result.ticketId}</b>`;
+                    e.target.reset();
+                } else {
+                    msg.className = "response-message error";
+                    msg.textContent = result.message;
+                }
+            } catch {
+                msg.style.display = "block";
+                msg.className = "response-message error";
+                msg.textContent = "Network error — try again.";
+            }
+
+            btn.disabled = false;
+            btn.textContent = "Submit Ticket";
+            loading.style.display = "none";
         });
+    </script>
 
-        const data = await response.json();
-        responseMessage.style.display = 'block';
-
-        if(data.success){
-            responseMessage.className = 'response-message success';
-            responseMessage.innerHTML = `
-                ✅ <strong>Ticket Submitted Successfully!</strong><br>
-                <span class="ticket-id">Ticket ID: ${data.ticketId}</span><br>
-                <small>The IT team has been notified and will contact you shortly.</small>
-            `;
-            document.getElementById('supportForm').reset();
-        } else {
-            responseMessage.className = 'response-message error';
-            responseMessage.textContent = `❌ ${data.message}`;
-        }
-
-    } catch(error){
-        console.error('Error:', error);
-        responseMessage.style.display='block';
-        responseMessage.className='response-message error';
-        responseMessage.textContent='❌ Network error. Please try again later.';
-    } finally {
-        submitBtn.disabled=false;
-        submitBtn.innerHTML='<i class="fas fa-paper-plane"></i> Submit Ticket';
-        loading.style.display='none';
-    }
-});
-
-// Urgency buttons functionality
-document.querySelectorAll('.urgency-option').forEach(option => {
-    option.addEventListener('click', () => {
-        document.getElementById('urgency').value = option.dataset.value;
-        document.querySelectorAll('.urgency-option').forEach(o => o.classList.remove('selected'));
-        option.classList.add('selected');
-    });
-});
-</script>
 </body>
 </html>
